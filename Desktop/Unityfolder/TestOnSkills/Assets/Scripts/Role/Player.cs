@@ -19,19 +19,19 @@ public class Player : BattleAgent {
 			Destroy (gameObject);
 		}
 
-		DontDestroyOnLoad (gameObject);
+//		DontDestroyOnLoad (gameObject);
 
-		mainPlayer.originalMaxHealth = 100;
-		mainPlayer.originalMaxStrength = 10;
-		mainPlayer.originalHealth = 100;
-		mainPlayer.originalStrength = 10;
-		mainPlayer.originalAttack = 1;
-		mainPlayer.originalPower = 1;
-		mainPlayer.originalMagic = 1;
-		mainPlayer.originalCrit = 1;
-		mainPlayer.originalAmour = 1;
-		mainPlayer.originalMagicResist = 1;
-		mainPlayer.originalAgility = 1;
+//		mainPlayer.originalMaxHealth = 100;
+//		mainPlayer.originalMaxStrength = 10;
+//		mainPlayer.originalHealth = 100;
+//		mainPlayer.originalStrength = 10;
+//		mainPlayer.originalAttack = 1;
+//		mainPlayer.originalPower = 1;
+//		mainPlayer.originalMagic = 1;
+//		mainPlayer.originalCrit = 1;
+//		mainPlayer.originalAmour = 1;
+//		mainPlayer.originalMagicResist = 1;
+//		mainPlayer.originalAgility = 1;
 
 	}
 

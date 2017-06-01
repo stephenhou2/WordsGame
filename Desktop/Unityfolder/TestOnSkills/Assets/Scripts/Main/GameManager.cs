@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using UnityEngine.SceneManagement;
+
 public class GameManager : MonoBehaviour {
 
 
@@ -37,13 +39,8 @@ public class GameManager : MonoBehaviour {
 	//初始化战斗
 	public void OnEnterBattle(){
 
-		m_battleManager = Instantiate (battleManager, this.transform);
+		SceneManager.LoadSceneAsync (1, LoadSceneMode.Additive);
 
-		m_battleManager.SetupBattleManager (player, gameProcess);
-
-//		battleManager.SetupBattleManager (player, gameProcess);
-
-		SetupBattleScene ();
 
 	}
 
@@ -62,6 +59,9 @@ public class GameManager : MonoBehaviour {
 		}
 		return skillGenerator.GenerateStateSkillEffects (effectsData,effectName);
 	}
+
+
+
 
 
 	//初始化战斗场景

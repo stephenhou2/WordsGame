@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class DoubleAttack : StateSkillEffect {
 
-	public override void AffectAgent (BattleAgent self, BattleAgent target, int skillLevel, bool isTriggered, TriggerType triggerType, int attachedInfo)
+	public override void AffectAgent (BattleAgent self, BattleAgent target, int skillLevel, TriggerType triggerType, int attachedInfo)
 	{
 		bool doubleAttack = isEffective (this.scaler * skillLevel);
-		if (doubleAttack) {
-			self.attackTime = 2;
-		}
+
+		self.attackTime = doubleAttack ? 2 : 1;
 
 	}
 

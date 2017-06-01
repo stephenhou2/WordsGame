@@ -109,7 +109,6 @@ public class EffectGenerator : MonoBehaviour {
 			return go.AddComponent<Poision>();
 		case 29:
 			return go.AddComponent<Stonelize>();
-			break; 
 		case 30:
 			return go.AddComponent<Sorcery>();
 		case 31:

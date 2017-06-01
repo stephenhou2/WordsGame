@@ -5,8 +5,9 @@ using UnityEngine;
 
 public abstract class BattleAgent : MonoBehaviour {
 
-	public string AgentName;
+	public string agentName;
 
+	public BattleAgent enemy;
 
 	//*****玩家初始信息********//
 	public int originalMaxHealth;
@@ -46,15 +47,11 @@ public abstract class BattleAgent : MonoBehaviour {
 
 	public EffectType effectType;//
 
-	public bool canAction = true;//是否可以行动
-
 	public float hurtScaler = 1.0f;//伤害系数
 
 	public float critScaler = 1.0f;//暴击伤害系数
 
-	public float healthAbsorbScalser;//回血比例
-
-//	public float critHurtScaler = 2.0f;//
+	public float healthAbsorbScalser = 0f;//回血比例
 
 	public List<Skill> skills = new List<Skill>();//技能数组
 
@@ -90,7 +87,9 @@ public abstract class BattleAgent : MonoBehaviour {
 			if (sse.effectName == states[i].effectName) {
 //				states.Remove (sse);
 				states.RemoveAt(i);
+				Destroy (sse);
 				ReCaculateProperty (false);
+				return;
 			}
 		}
 	}
@@ -103,18 +102,21 @@ public abstract class BattleAgent : MonoBehaviour {
 				sse.startTurn = StartTurn.Current;
 				return;
 			}
-			sse.AffectAgent (this, null, sse.skillLevel, false, TriggerType.None, 0);
+			sse.AffectAgent (this, this.enemy, sse.skillLevel, TriggerType.None, 0);
 		}
 	}
 	// 状态效果触发执行的方法
 	public void OnTrigger(TriggerType triggerType,int arg){
 		foreach(StateSkillEffect sse in states){
-			sse.AffectAgent (this, null, sse.skillLevel, true, triggerType, arg);
+			if (sse.triggerType == TriggerType.None) {
+				return;
+			}
+			sse.AffectAgent (this, this.enemy, sse.skillLevel, triggerType, arg);
 		}
 
 	}
 
-	// 仅根据物品重新计人物的各个属性
+	// 仅根据物品重新计人物的属性，其余属性重置为初始状态
 	public void ResetBattleAgentProperties (bool toOriginalState)
 	{
 
@@ -145,12 +147,17 @@ public abstract class BattleAgent : MonoBehaviour {
 
 		maxHealth = originalMaxHealth + healthGainScaler * power;
 		maxStrength = originalMaxStrength + (int)(strengthGainScaler * power);
+		validActionType = ValidActionType.All;
+		hurtScaler = 1.0f;//伤害系数
+		critScaler = 1.0f;//暴击伤害系数
+		healthAbsorbScalser = 0f;//回血比例
+		attackTime = 1;
+
 
 		if (toOriginalState) {
 			health = maxHealth;
 			strength = maxStrength;
 		}
-		Debug.Log (this);
 	}
 
 	public override string ToString ()

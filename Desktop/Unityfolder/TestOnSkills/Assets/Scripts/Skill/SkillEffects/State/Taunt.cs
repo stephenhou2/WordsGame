@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Taunt : StateSkillEffect {
 
-	public override void AffectAgent (BattleAgent self, BattleAgent target, int skillLevel, bool isTriggered, TriggerType triggerType, int attachedInfo)
+	public override void AffectAgent (BattleAgent self, BattleAgent target, int skillLevel, TriggerType triggerType, int attachedInfo)
 	{
 		target.validActionType = ValidActionType.PhysicalOnly;
-		target.attack = (int)(this.scaler * self.attack);
+		self.attack = (int)(this.scaler * self.attack);
 	}
 }

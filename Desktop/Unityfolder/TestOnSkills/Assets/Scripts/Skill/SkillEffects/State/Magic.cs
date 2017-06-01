@@ -4,23 +4,21 @@ using UnityEngine;
 
 public class Magic : StateSkillEffect {
 
-	public override void AffectAgent (BattleAgent self, BattleAgent target, int skillLevel, bool isTriggered, TriggerType triggerType, int attachedInfo)
+	public override void AffectAgent (BattleAgent self, BattleAgent target, int skillLevel, TriggerType triggerType, int attachedInfo)
 	{
 		int index = Random.Range (0, target.skills.Count);
 
-		Skill s = target.skills [index];
+		Skill s = Instantiate(target.skills [index]);
 
 		s.skillLevel = skillLevel;
 
-		self.skills.Add (target.skills [index]);
+		s.actionCount = 0;
+
+		s.isCopiedSkill = true;
+
+		self.skills.Add (s);
 
 
-	}
-
-	public override void AddStateTo (BattleAgent ba)
-	{
-		base.AddStateTo (ba);
-		ba.skills.RemoveAt (ba.skills.Count - 1);
 	}
 
 }

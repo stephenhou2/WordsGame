@@ -6,13 +6,16 @@ using UnityEngine.UI;
 public class Sacrifice : StateSkillEffect {
 
 
-	public override void AffectAgent (BattleAgent self, BattleAgent target, int skillLevel, bool isTriggered, TriggerType triggerType, int arg)
+	public override void AffectAgent (BattleAgent self, BattleAgent target, int skillLevel, TriggerType triggerType, int arg)
 	{
 		bool succeedSacrifice = isEffective (this.scaler * skillLevel);
 
 		if (succeedSacrifice) {
 			foreach (Button btn in GameManager.gameManager.battleManager.GetComponent<BattleManager>().skillButtons) {
-				btn.enabled = true;
+				btn.interactable = true;
+			}
+			foreach (Skill s in self.skills) {
+				s.isAvalible = true;
 			}
 		}
 

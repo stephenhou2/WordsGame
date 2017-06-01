@@ -6,8 +6,9 @@ public class Gambler : StateSkillEffect {
 
 	[HideInInspector]public StateSkillEffect[] stateSkillEffects;//针对赌徒维护的状态表单
 
-	public override void AffectAgent (BattleAgent self, BattleAgent target, int skillLevel, bool isTriggered, TriggerType triggerType, int attachedInfo)
+	public override void AffectAgent (BattleAgent self, BattleAgent target, int skillLevel, TriggerType triggerType, int attachedInfo)
 	{
+		// 获取所有的技能效果
 		if (stateSkillEffects == null) {
 			stateSkillEffects = GameManager.gameManager.GenerateStates (null);
 		}

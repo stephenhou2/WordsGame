@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Burn : StateSkillEffect {
 
-	public override void AffectAgent (BattleAgent self, BattleAgent target, int skillLevel, bool isTriggered, TriggerType triggerType, int attachedInfo)
+	public override void AffectAgent (BattleAgent self, BattleAgent target, int skillLevel, TriggerType triggerType, int attachedInfo)
 	{
 
 		//原始魔法伤害值
-		int originalDamage = (int)((this.scaler * skillLevel / ( 1 + this.scaler * skillLevel)) * self.magic * this.actionCount * self.hurtScaler);
+		int originalDamage = (int)((this.scaler * skillLevel / ( 1 + this.scaler * skillLevel)) * target.magic * this.actionCount * self.hurtScaler);
 
 		//抵消魔抗作用后的实际伤害值
 		int actualDamage = (int)(originalDamage / (1 + seed * self.magicResist));
@@ -27,6 +27,10 @@ public class Burn : StateSkillEffect {
 //		target.OnTrigger (TriggerType.BeHit, DamageOffset);
 
 		self.health -= actualDamage;
+
+		if (self.health < 0) {
+			self.health = 0;
+		}
 
 	}
 }

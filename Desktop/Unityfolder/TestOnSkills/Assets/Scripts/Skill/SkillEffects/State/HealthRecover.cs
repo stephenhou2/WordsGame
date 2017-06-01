@@ -7,7 +7,6 @@ public class HealthRecover : StateSkillEffect {
 	public override void AffectAgent (BattleAgent self, 
 		BattleAgent target,
 		int skillLevel,
-		bool isMagicTriggered,
 		TriggerType triggerType,
 		int attachedInfo)
 	{

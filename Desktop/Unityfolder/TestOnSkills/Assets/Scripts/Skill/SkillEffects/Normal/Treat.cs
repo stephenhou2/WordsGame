@@ -7,11 +7,9 @@ public class Treat : BaseSkillEffect {
 	public override void AffectAgent (BattleAgent self, 
 		BattleAgent target,
 		int skillLevel,
-		bool isMagicTriggered,
 		TriggerType triggerType,
 		int arg)
 	{
-		this.effectType = EffectType.Treat;
 
 		int healthRecover = (int)(self.maxHealth * this.scaler * skillLevel);
 		self.health += healthRecover;

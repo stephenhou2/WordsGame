@@ -42,11 +42,14 @@ public enum StateType{
 }
 
 public enum TriggerType{
-	Hit,
-	BeHit,
+	None,
+	PhysicalHit,
+	MagicalHit,
+	BePhysicalHit,
+	BeMagicalHit,
 	Dodge,
-	Debuff,
-	None
+	Debuff
+
 }
 
 public enum StartTurn{
@@ -56,7 +59,7 @@ public enum StartTurn{
 
 
 [System.Serializable]
-public struct EffectData{
+public class EffectData{
 	public string effectName;//魔法效果名称
 
 	public string description;//魔法效果描述

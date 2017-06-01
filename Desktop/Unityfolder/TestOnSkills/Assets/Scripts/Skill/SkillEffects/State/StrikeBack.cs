@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class StrikeBack : StateSkillEffect {
 
-	public override void AffectAgent (BattleAgent self, BattleAgent target, int skillLevel, bool isTriggered, TriggerType triggerType, int attachedInfo)
+	public override void AffectAgent (BattleAgent self, BattleAgent target, int skillLevel, TriggerType triggerType, int attachedInfo)
 	{
+
 		bool strikeBack = isEffective (this.scaler * skillLevel);
-		if (strikeBack && triggerType == TriggerType.BeHit) {
-			#warning 进行一次普通攻击
+
+		if (strikeBack && (triggerType == TriggerType.BePhysicalHit || triggerType == TriggerType.BeMagicalHit)) {
+
+			Debug.Log (self.agentName + "使用了反击");
+
 			float dodge = seed * target.agility / (1 + seed * target.agility);
+
 			//判断对方是否闪避成功
 			if (isEffective (dodge)) {
 				Debug.Log ("enemy dodge your attack");
@@ -17,6 +22,13 @@ public class StrikeBack : StateSkillEffect {
 				target.OnTrigger (TriggerType.Dodge, 0);
 				return;
 			}
+
+			bool isCrit = isEffective (seed * self.crit / (1 + seed * self.crit));
+
+			if (isCrit) {
+				self.critScaler = 2.0f;
+			}
+
 			//原始物理伤害值
 			int originalDamage = (int)(self.attack * target.hurtScaler * self.critScaler);
 
@@ -27,11 +39,17 @@ public class StrikeBack : StateSkillEffect {
 			int DamageOffset = originalDamage - actualDamage;
 
 			//己方触发命中效果
-			self.OnTrigger (TriggerType.Hit, 0);
+			self.OnTrigger (TriggerType.PhysicalHit, 0);
 			//目标触发被击中效果
-			target.OnTrigger (TriggerType.BeHit, DamageOffset);
+			target.OnTrigger (TriggerType.BePhysicalHit, DamageOffset);
 
 			target.health -= actualDamage;
+
+			if (target.health < 0) {
+				target.health = 0;
+			}
+
+			self.critScaler = 1.0f;
 		}
 	}
 }

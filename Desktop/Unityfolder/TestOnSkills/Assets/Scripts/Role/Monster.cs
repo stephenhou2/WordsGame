@@ -6,16 +6,15 @@ public class Monster : BattleAgent {
 
 	public int monsterId;
 
-
-
 	public void SetupMonster(int gameProcess){
-//		Skill skill_1 = GameManager.gameManager.skillGenerator.GenerateSkillWithIds (2, 20),skillsContainer.transform);
+		GameManager.gameManager.OnGenerateSkill ();
+		GameManager.gameManager.skillGenerator.GenerateSkillWithIds (2, 20,this);
 	}
 		
 	//怪物的技能选择
-	public Skill SkillOfMonster(Monster monster){
+	public Skill SkillOfMonster(){
 		Skill monsterSkill = null;
-		switch (monster.validActionType) {
+		switch (validActionType) {
 		case ValidActionType.All:
 			
 			break;
@@ -23,9 +22,6 @@ public class Monster : BattleAgent {
 			
 			break;
 		case ValidActionType.MagicException:
-			
-			break;
-		case ValidActionType.None:
 			
 			break;
 		case ValidActionType.PhysicalOnly:
@@ -41,4 +37,22 @@ public class Monster : BattleAgent {
 		return monsterSkill;
 
 	}
+
+
+	public void ManageSkillAvalibility(){
+		// 如果技能还在冷却中或者怪物气力值小于技能消耗的气力值，则相应按钮不可用
+		for (int i = 0;i < skills.Count;i++) {
+			Skill s = skills [i];
+
+			if (s.isAvalible == false) {
+				s.actionCount++;
+				if (s.actionCount >= s.actionConsume && strength >= s.strengthConsume) {
+					s.isAvalible = true;
+					s.actionCount = 0;
+				} 
+			}
+		}
+
+	}
+
 }

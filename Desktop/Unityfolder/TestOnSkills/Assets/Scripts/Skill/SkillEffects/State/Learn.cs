@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Learn: StateSkillEffect {
 
-	public override void AffectAgent (BattleAgent self, BattleAgent target, int skillLevel, bool isTriggered, TriggerType triggerType, int attachedInfo)
+	public override void AffectAgent (BattleAgent self, BattleAgent target, int skillLevel, TriggerType triggerType, int attachedInfo)
 	{
-		bool succeedSteal = isEffective (this.scaler * skillLevel);
-		if (succeedSteal) {
+		bool succeedLearn = isEffective (this.scaler * skillLevel);
+		if (succeedLearn) {
 			List<StateSkillEffect> buffs = new List<StateSkillEffect>();
 			foreach (StateSkillEffect sse in target.states) {
 				if (sse.effectType == EffectType.Buff) {
@@ -18,6 +18,7 @@ public class Learn: StateSkillEffect {
 			int index = Random.Range (0, buffs.Count);
 			StateSkillEffect buff = buffs [index];
 			buff.effectDuration = 1;//传染给攻击者的debuff一共持续1轮
+			buff.actionCount = 0;
 			self.AddState (buff,skillLevel);
 
 		}

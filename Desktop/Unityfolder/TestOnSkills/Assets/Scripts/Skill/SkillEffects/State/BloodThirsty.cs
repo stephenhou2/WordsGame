@@ -8,7 +8,6 @@ public class BloodThirsty : BaseSkillEffect {
 	public override void AffectAgent (BattleAgent self, 
 		BattleAgent target,
 		int skillLevel,
-		bool isMagicTriggered,
 		TriggerType triggerType,
 		int attachedInfo)
 	{

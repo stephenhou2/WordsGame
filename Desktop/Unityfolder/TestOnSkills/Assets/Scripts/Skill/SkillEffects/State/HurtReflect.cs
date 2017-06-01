@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class HurtReflect : StateSkillEffect {
 
-	public override void AffectAgent (BattleAgent self, BattleAgent target, int skillLevel, bool isTriggered, TriggerType triggerType, int attachedInfo)
+	public override void AffectAgent (BattleAgent self, BattleAgent target, int skillLevel, TriggerType triggerType, int attachedInfo)
 	{
-		if (triggerType == TriggerType.BeHit || triggerType == TriggerType.Debuff) {
+		if (triggerType == TriggerType.BePhysicalHit 
+			|| triggerType == TriggerType.BePhysicalHit) {
 			
 			float reflectScaler = this.scaler * skillLevel;
 
@@ -19,9 +20,12 @@ public class HurtReflect : StateSkillEffect {
 				target.OnTrigger (TriggerType.Dodge, 0);
 				return;
 			}
-			//护甲和魔抗所抵消的伤害值 
+			// 反弹（reflectScaler * 护甲和魔抗所抵消的伤害值）的伤害
 			target.health -= (int)(attachedInfo * reflectScaler);
 
+			if (target.health < 0) {
+				target.health = 0;
+			}
 		}
 
 

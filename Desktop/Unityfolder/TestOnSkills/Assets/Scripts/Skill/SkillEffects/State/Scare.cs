@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class Scare : StateSkillEffect {
 	
-	public override void AffectAgent (BattleAgent self, BattleAgent target, int skillLevel, bool isTriggered, TriggerType triggerType, int attachedInfo)
+	public override void AffectAgent (BattleAgent self, BattleAgent target, int skillLevel, TriggerType triggerType, int attachedInfo)
 	{
 		bool isScared = isEffective (this.scaler * skillLevel);
 		
 		if (isScared){
-			target.strength -= Random.Range (3, 5);
+			self.strength -= Random.Range (3, 5);
+			if (self.strength < 0) {
+				self.strength = 0;
+			}
 		}
 	}
 

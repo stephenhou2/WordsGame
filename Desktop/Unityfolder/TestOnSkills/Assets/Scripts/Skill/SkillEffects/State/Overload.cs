@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Overload: StateSkillEffect {
 
-	public override void AffectAgent (BattleAgent self, BattleAgent target, int skillLevel, bool isTriggered, TriggerType triggerType, int attachedInfo)
+	public override void AffectAgent (BattleAgent self, BattleAgent target, int skillLevel, TriggerType triggerType, int attachedInfo)
 	{
 		self.hurtScaler = 1 + this.scaler * skillLevel;
 		target.hurtScaler = self.hurtScaler;

@@ -7,7 +7,7 @@ public class Skill : MonoBehaviour {
 
 	public string skillName;// 技能名称
 
-	[HideInInspector]public BaseSkillEffect[] skillEffects;//魔法效果数组
+	public BaseSkillEffect[] skillEffects;//魔法效果数组
 
 	public int strengthConsume;//技能的气力消耗
 
@@ -15,27 +15,29 @@ public class Skill : MonoBehaviour {
 
 	public int actionCount;//从释放技能开始已经走过的回合数
 
-	public bool isAvalible;// 技能是否可用
-
 	public int skillLevel;// 技能等级
 
+	public bool isAvalible = true;
 
-	public void AffectAgent(BattleAgent user, BattleAgent target,int skillLevel,bool isMagicTriggered){
+	public bool isCopiedSkill;
+
+	public int copiedSkillAvalibleTime = 2;
+
+	public void AffectAgent(BattleAgent self, BattleAgent target,int skillLevel){
 		
-		user.strength -= this.strengthConsume;//使用魔法后使用者减去对应的气力消耗
-
-		this.isAvalible = false;//使用魔法后该魔法进入冷却过程，无法使用
-
-		Debug.Log (skillEffects[0]);
-
 		foreach (BaseSkillEffect bse in skillEffects) {
 			if (!bse.isStateEffect) {
-				bse.AffectAgent (user, target, skillLevel, isMagicTriggered,TriggerType.None,0);
+				bse.AffectAgent (self, target, skillLevel, TriggerType.None, 0);
 			} else {
-				(bse as StateSkillEffect).ManageState (user, target, skillLevel, isMagicTriggered,TriggerType.None,0);
+				(bse as StateSkillEffect).ManageState (self, target, skillLevel, TriggerType.None, 0);
 			}
 		}
-
+		if (isCopiedSkill) {
+			copiedSkillAvalibleTime--;
+			if (copiedSkillAvalibleTime <= 0) {
+				self.skills.Remove (this);
+			}
+		}
 	}
 
 	public override string ToString ()

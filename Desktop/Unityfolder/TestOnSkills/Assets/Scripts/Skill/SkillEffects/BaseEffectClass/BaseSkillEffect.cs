@@ -37,12 +37,13 @@ public abstract class BaseSkillEffect:MonoBehaviour {
 
 	public int skillLevel;//效果等级
 
+	public TriggerType triggerType;//触发效果的trigger类型
+
 	 
 	//技能实际效果
 	public abstract void AffectAgent (BattleAgent self, 
 		BattleAgent target,
 		int skillLevel,
-		bool isTriggered,
 		TriggerType triggerType,
 		int attachedInfo);
 
