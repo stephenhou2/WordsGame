@@ -29,7 +29,7 @@ public class Skill : MonoBehaviour {
 			if (!bse.isStateEffect) {
 				bse.AffectAgent (self, target, skillLevel, TriggerType.None, 0);
 			} else {
-				(bse as StateSkillEffect).ManageState (self, target, skillLevel, TriggerType.None, 0);
+				BattleAgentStatesManager.AddStateCopyToEffectTarget (self, target, bse as StateSkillEffect, skillLevel);
 			}
 		}
 		if (isCopiedSkill) {

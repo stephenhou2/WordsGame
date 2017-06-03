@@ -46,6 +46,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Prefabs\UIPrefabs\EffectText.cs" />
+     <Compile Include="Assets\Scripts\BattleAgentStatesManager.cs" />
      <Compile Include="Assets\Scripts\DataSource\DataString.cs" />
      <Compile Include="Assets\Scripts\Items\Item.cs" />
      <Compile Include="Assets\Scripts\Main\BattleManager.cs" />
@@ -104,19 +106,23 @@
      <Compile Include="Assets\Scripts\Skill\SkillEffects\State\Weaken.cs" />
      <Compile Include="Assets\Scripts\Skill\SkillEffects\State\Wrestle.cs" />
      <Compile Include="Assets\Scripts\Skill\SkillEffects\State\Yield.cs" />
+     <Compile Include="Assets\Scripts\Tools\BaseUI.cs" />
      <Compile Include="Assets\Scripts\Tools\CommonData.cs" />
+     <Compile Include="Assets\Scripts\Tools\ContainerManager.cs" />
      <Compile Include="Assets\Scripts\Tools\DataInitializer.cs" />
-     <Compile Include="Assets\Scripts\Tools\DataLoader.cs" />
      <Compile Include="Assets\Scripts\Tools\EffectGenerator.cs" />
      <Compile Include="Assets\Scripts\Tools\GameLoader.cs" />
      <Compile Include="Assets\Scripts\Tools\JsonHelper.cs" />
      <Compile Include="Assets\Scripts\Tools\SkillGenerator.cs" />
+     <Compile Include="Assets\Scripts\Tools\WordGenerator.cs" />
      <Compile Include="Assets\Scripts\UI\ConfirmSelectButton.cs" />
      <Compile Include="Assets\Scripts\UI\EnterBattleButton.cs" />
      <Compile Include="Assets\Scripts\UI\GenerateSkillButton.cs" />
      <Compile Include="Assets\Scripts\UI\QuitButton.cs" />
      <Compile Include="Assets\Scripts\UI\SelectEffectsButton.cs" />
      <Compile Include="Assets\Scripts\UI\SkillButton.cs" />
+     <Compile Include="Assets\WordsTestJson.cs" />
+     <None Include="Assets\WordsTestJson.txt" />
      <None Include="Assets\Scripts\DataSource\SkillEffectData.txt" />
  <Reference Include="UnityEngine.Analytics">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>

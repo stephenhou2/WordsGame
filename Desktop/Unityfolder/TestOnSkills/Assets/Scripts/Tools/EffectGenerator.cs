@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class EffectGenerator : MonoBehaviour {
 
-	public GameObject skillEffectModel;
-
 	public List<BaseSkillEffect> skillEffectsList = new List<BaseSkillEffect>();
 
 
@@ -16,7 +14,7 @@ public class EffectGenerator : MonoBehaviour {
 
 		foreach (EffectData ed in edArray) {
 
-			GameObject skillEffect = Instantiate (skillEffectModel,effectsContainer);
+			GameObject skillEffect = ContainerManager.NewContainer ("effect", effectsContainer).gameObject;
 
 			if (effectName != null && ed.effectName != effectName) {
 				continue;
@@ -27,9 +25,9 @@ public class EffectGenerator : MonoBehaviour {
 			}
 
 			//添加对应技能脚本
-
 			BaseSkillEffect bse = AddComponentWithEffectId (skillEffect, ed.id);
 
+			// 技能效果初始化
 			bse.effectName = ed.effectName;
 			bse.description = ed.description;
 			bse.id = ed.id;
@@ -40,7 +38,10 @@ public class EffectGenerator : MonoBehaviour {
 			bse.scaler = ed.scaler;
 			bse.isStateEffect = ed.isStateEffect;
 			bse.canOverlay = ed.canOverlay;
+			bse.startTurn = ed.startTurn;
+			bse.effectType = ed.effectType;
 
+			
 			skillEffectsList.Add (bse);
 
 		}
@@ -141,6 +142,10 @@ public class EffectGenerator : MonoBehaviour {
 			return go.AddComponent<Steal>();
 		case 45:
 			return go.AddComponent<Seal> (); 
+		case 46:
+			return go.AddComponent<PhysicalAttack> ();
+		case 47:
+			return go.AddComponent<Defence> ();
 		default:
 			return null; 
 		}

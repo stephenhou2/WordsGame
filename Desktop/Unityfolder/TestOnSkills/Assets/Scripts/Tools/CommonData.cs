@@ -80,8 +80,21 @@ public class EffectData{
 
 	public bool canOverlay;//是否可以叠加
 
+	public StartTurn startTurn;//效果开始轮
+
+	public EffectType effectType;//物理攻击、魔法攻击、混乱攻击
+
 	public override string ToString ()
 	{
 		return string.Format ("[EffectDataInitializer]" + "\n[effectName]:" + effectName + "\n[description]:" + description + "\n[id]:" + id);
 	}
+
+}
+
+[System.Serializable]
+public struct Word{
+
+	public string word;
+	public string description;
+
 }

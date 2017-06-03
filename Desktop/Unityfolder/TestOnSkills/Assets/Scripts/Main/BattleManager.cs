@@ -2,16 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Threading;
 using UnityEngine.SceneManagement;
 
 public class BattleManager : MonoBehaviour {
 
+//	private Player player;
+//
+//	public Monster monsterModel;
+//
+//	private Monster monster;
+
+	// ********for test use**********//
 	public Player player;
 
 	public Monster monster;
+	// ********for test use**********//
 
-	public static int gameProcess;
+	public int gameProcess;
 
 	public Button[] skillButtons;
 
@@ -33,26 +40,55 @@ public class BattleManager : MonoBehaviour {
 
 	public GameObject controlPlane;
 
-//	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-//	static private void CallBackAfterBattleSceneLoaded(){
-//		SceneManager.sceneLoaded += OnSceneLoaded;
-//	}
-//
-//	static private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
-//	{
-//		gameProcess = GameManager.gameManager.gameProcess;
-//	}
+	public GameObject battleEndHUD;
 
+	public Text battleEndResult;
 
+	public Button quit;
+
+	public Button reset;
+
+	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+	static private void CallBackAfterBattleSceneLoaded(){
+		SceneManager.sceneLoaded += OnSceneLoaded;
+	}
+
+	static private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
+	{
+
+		BattleManager bm = GameObject.Find ("BattleManager").GetComponent<BattleManager> ();
+
+		int gameProcess = GameManager.gameManager.gameProcess;
+
+		Player player = GameManager.gameManager.player;
+
+		bm.SetupBattleManager (player, gameProcess);
+	}
+
+	// **************for test use************//
+	// 后面改为scene加载后执行的函数（上面的）
+	void Awake(){
+
+		SetupBattleManager (player, gameProcess);
+
+		OnResetGame ();
+	}
 
 	// 进入战斗场景时初始化玩家和怪物数据
 	public void SetupBattleManager(Player player,int gameProcess){
-		
-//		player.enemy = monster;
-//
-//		monster.enemy = player;
 
-		monster.SetupMonster (gameProcess);
+		// 每一关根据游戏进度创建新的怪物
+//		monster = Instantiate (monsterModel);
+
+//		monster.SetupMonster (gameProcess);
+
+
+		#warning 这里是否会产生循环引用？注意一下
+		player.enemy = monster;
+
+		monster.enemy = player;
+
+
 
 	}
 
@@ -62,7 +98,9 @@ public class BattleManager : MonoBehaviour {
 
 		Skill playerSkill = player.skills [skillId];
 
-		description.text = "使用了" + playerSkill.skillName;
+		description.text = "player 使用了" + playerSkill.skillName;
+
+		Debug.Log("player 使用了" + playerSkill.skillName);
 
 		playerSkill.AffectAgent (player,monster,playerSkill.skillLevel);
 
@@ -70,7 +108,15 @@ public class BattleManager : MonoBehaviour {
 
 		player.strength -= playerSkill.strengthConsume;//使用魔法后使用者减去对应的气力消耗
 
-		StartCoroutine ("PlayerAnimation");
+		Debug.Log ("before animation");
+
+		try{
+			StartCoroutine ("PlayerAnimation");
+		}catch(System.Exception e){
+			Debug.Log (e.Message);
+		}
+
+
 
 	}
 
@@ -79,7 +125,9 @@ public class BattleManager : MonoBehaviour {
 		#warning player animation
 		yield return new WaitForSeconds (1.0f);//动画暂时由延时1s代替
 
-		UpdateStates ();//更新玩家和怪物状态
+		UpdatePropertiesByStates ();
+
+		UpdateUIAndBattleResult ();//更新玩家和怪物状态,判断游戏是否结束
 
 		MonsterAction ();//怪物行动
 	}
@@ -118,7 +166,9 @@ public class BattleManager : MonoBehaviour {
 		#warning player animation
 		yield return new WaitForSeconds (1.0f);
 
-		UpdateStates ();
+		UpdatePropertiesByStates ();
+
+		UpdateUIAndBattleResult ();
 
 		controlPlane.gameObject.SetActive (false);
 
@@ -128,41 +178,52 @@ public class BattleManager : MonoBehaviour {
 
 
 	public void EnterNextTurn(){
-		
-		//进入下一回合，用户选技能之前，先根据各自状态对玩家和怪物产生响应的影响
-		for(int i = 0;i<player.states.Count;i++){
-			StateSkillEffect sse = player.states [i];
-			sse.ManageState (player, monster, sse.skillLevel, TriggerType.None, 0);
-		}
-		for(int i = 0;i<monster.states.Count;i++){
-			StateSkillEffect sse = monster.states [i];
-			sse.ManageState (monster, player, sse.skillLevel, TriggerType.None, 0);
-		}
+
+		UpdatePropertiesByStates ();
+
+		BattleAgentStatesManager.CheckStates (player,monster);
 
 		// 根据玩家可采取的行动类型设定技能按钮是否可以交互
 		ValidActionForPlayer ();
 	}
 
-	public void UpdateStates(){
+	private void UpdatePropertiesByStates(){
+		for(int i = 0;i<player.states.Count;i++){
+			StateSkillEffect sse = player.states [i];
+			sse.ExcuteEffect (player, monster, sse.skillLevel, TriggerType.None, 0);
+		}
+		for(int i = 0;i<monster.states.Count;i++){
+			StateSkillEffect sse = monster.states [i];
+			sse.ExcuteEffect (monster, player, sse.skillLevel, TriggerType.None, 0);
+		}
+	}
+
+	public void UpdateUIAndBattleResult(){
 		
-		playerHealth.value = player.health;
-		playerStrength.value = player.strength;
-		monsterHealth.value = monster.health;
-		monsterStrength.value = monster.strength;
+		UpdateStatesUI ();
 
 		#warning picturs of states toAdd
 
 
 
 		if (player.health <= 0) {
-			Debug.Log ("you lose");
-			OnQuitBattle ();
+			battleEndHUD.gameObject.SetActive (true);
+			battleEndResult.text = "You Lose!";
+
 		} else if (monster.health <= 0) {
-			Debug.Log ("you win");
-			OnQuitBattle ();
+			battleEndHUD.gameObject.SetActive (true);
+			battleEndResult.text = "you win";
+
 		}
 
 
+	}
+
+	public void UpdateStatesUI(){
+		playerHealth.value = player.health;
+		playerStrength.value = player.strength;
+		monsterHealth.value = monster.health;
+		monsterStrength.value = monster.strength;
 
 	}
 
@@ -171,7 +232,6 @@ public class BattleManager : MonoBehaviour {
 		switch (player.validActionType) {
 
 		case ValidActionType.All:
-			EnableOrDisableButtons (true, true, true, true);
 			break;
 		case ValidActionType.PhysicalExcption:
 			EnableOrDisableButtons (false, true, true, true);
@@ -199,15 +259,13 @@ public class BattleManager : MonoBehaviour {
 			// 如果是冷却中的技能
 			if (s.isAvalible == false) {
 				s.actionCount++;
-				Debug.Log ("name" + s.skillName + "acitonCount" + s.actionCount);
-				if (s.actionCount >= s.actionConsume) {
+				Debug.Log (s.skillName + "从使用开始经过了" + s.actionCount + "回合");
+				if (s.actionCount >= s.actionConsume && player.strength >= s.strengthConsume) {
 					skillButtons [i].interactable = true;
 					s.isAvalible = true;
 					s.actionCount = 0;
-					Debug.Log (s.skillName + "-------------------");
 				} else {
 					skillButtons [i].interactable = false;
-					Debug.Log (s.skillName + "++++++++++++++++++++");
 				}
 			}
 			// 如果不是冷却中的技能
@@ -220,13 +278,13 @@ public class BattleManager : MonoBehaviour {
 
 	//根据玩家状态判断按钮是否可以交互
 	private void EnableOrDisableButtons(bool isAttackEnable,bool isSkillEnable,bool isItemEnable,bool isDefenceEnable){
-		attackButton.interactable = isAttackEnable;
-		defenceButton.interactable = isDefenceEnable;
+		attackButton.interactable = isAttackEnable && attackButton.interactable;
+		defenceButton.interactable = isDefenceEnable && defenceButton.interactable;
 		foreach (Button btn in skillButtons) {
-			btn.interactable = isSkillEnable;
+			btn.interactable = isSkillEnable && btn.interactable;
 		}
 		foreach (Button btn in itemButtons) {
-			btn.interactable = isItemEnable;
+			btn.interactable = isItemEnable && btn.interactable;
 		}
 	}
 
@@ -248,8 +306,23 @@ public class BattleManager : MonoBehaviour {
 
 	}
 
+	//*********** for skill test use **************//
+	public void OnResetGame(){
+		player.states.Clear ();
+		monster.states.Clear ();
+
+		OnReset ();
+
+		battleEndHUD.SetActive (false);
+		UpdateStatesUI ();
+		foreach (Button btn in skillButtons) {
+			btn.interactable = true;
+		}
+	}
+
 	public void OnQuitBattle(){
 		Debug.Log ("quit to main screen");
+		battleEndHUD.gameObject.SetActive (false);
 	}
 
 	public void OnReset(){
@@ -260,15 +333,18 @@ public class BattleManager : MonoBehaviour {
 		//*************** for test use ************//
 		for (int i = 0; i < player.skills.Count; i++) {
 			foreach (BaseSkillEffect bse in player.skills[i].skillEffects) {
-				bse.actionCount = 0;
+				bse.actionCount = 1;
 			}
 		}
 
 		for (int i = 0; i < player.skills.Count; i++) {
 			foreach (BaseSkillEffect bse in player.skills[i].skillEffects) {
-				bse.actionCount = 0;
+				bse.actionCount = 1;
 			}
 		}
+
+
+
 		//*************** for test use ************//
 	}
 

@@ -19,7 +19,8 @@ public class Learn: StateSkillEffect {
 			StateSkillEffect buff = buffs [index];
 			buff.effectDuration = 1;//传染给攻击者的debuff一共持续1轮
 			buff.actionCount = 0;
-			self.AddState (buff,skillLevel);
+			buff.effectTarget = SkillEffectTarget.Self;
+			BattleAgentStatesManager.AddStateCopyToEffectTarget (self, target, buff, skillLevel);
 
 		}
 	}

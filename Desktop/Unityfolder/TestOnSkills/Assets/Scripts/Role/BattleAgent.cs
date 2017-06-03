@@ -7,7 +7,7 @@ public abstract class BattleAgent : MonoBehaviour {
 
 	public string agentName;
 
-	public BattleAgent enemy;
+	[HideInInspector]public BattleAgent enemy;
 
 	//*****玩家初始信息********//
 	public int originalMaxHealth;
@@ -61,25 +61,19 @@ public abstract class BattleAgent : MonoBehaviour {
 
 	public int attackTime = 1;//攻击次数
 
-	public Transform statesContainerModel;//状态容器,用于使层级视图更加整洁
-
-	public Transform skillsContainerModel;
-
 	[HideInInspector]public Transform skillsContainer;
 
 	[HideInInspector]public Transform statesContainer;
 
 	public virtual void Awake(){
-		statesContainer = Instantiate (statesContainerModel, this.transform);
-		statesContainer.name = "States";
-		skillsContainer = Instantiate (skillsContainerModel, this.transform);
-		skillsContainer.name = "Skills";
+		statesContainer = ContainerManager.NewContainer ("States", this.transform);
+		skillsContainer = ContainerManager.NewContainer ("Skills", this.transform);
 	}
 
 	//添加状态 
-	public void AddState(StateSkillEffect sse,int skillLevel){
+	public void AddState(StateSkillEffect sse){
 		states.Add (sse);
-		ReCaculateProperty (false);
+		ResetBattleAgentProperties (false);
 	}
 	//删除状态
 	public void RemoveState(StateSkillEffect sse){
@@ -88,23 +82,24 @@ public abstract class BattleAgent : MonoBehaviour {
 //				states.Remove (sse);
 				states.RemoveAt(i);
 				Destroy (sse);
-				ReCaculateProperty (false);
+				ResetBattleAgentProperties (false);
 				return;
 			}
 		}
 	}
 
 	//根据状态重新计算各属性值
-	public void ReCaculateProperty(bool toOriginalState){
-		ResetBattleAgentProperties (toOriginalState);
-		foreach (StateSkillEffect sse in states) {
-			if (sse.startTurn == StartTurn.Next) {
-				sse.startTurn = StartTurn.Current;
-				return;
-			}
-			sse.AffectAgent (this, this.enemy, sse.skillLevel, TriggerType.None, 0);
-		}
-	}
+//	public void ReCaculateProperty(bool toOriginalState){
+//		ResetBattleAgentProperties (toOriginalState);
+//		foreach (StateSkillEffect sse in states) {
+//			if (sse.startTurn == StartTurn.Next) {
+//				sse.startTurn = StartTurn.Current;
+//				return;
+//			}
+//			sse.AffectAgent (this, this.enemy, sse.skillLevel, TriggerType.None, 0);
+//			sse.startTurn = StartTurn.Next;
+//		}
+//	}
 	// 状态效果触发执行的方法
 	public void OnTrigger(TriggerType triggerType,int arg){
 		foreach(StateSkillEffect sse in states){

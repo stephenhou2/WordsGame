@@ -31,7 +31,8 @@ public class Gambler : StateSkillEffect {
 				}
 
 			}
-			self.AddState (buff,skillLevel);
+			buff.effectTarget = SkillEffectTarget.Self;
+			BattleAgentStatesManager.AddStateCopyToEffectTarget (self, target, buff, skillLevel);
 			return;
 		}
 
@@ -47,6 +48,7 @@ public class Gambler : StateSkillEffect {
 				debuff.effectDuration = 1;
 			}
 		}
-		self.AddState (debuff,skillLevel);
+		debuff.effectTarget = SkillEffectTarget.Self;
+		BattleAgentStatesManager.AddStateCopyToEffectTarget (self, target, debuff, skillLevel);
 	}
 }

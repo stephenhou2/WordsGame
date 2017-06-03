@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class Player : BattleAgent {
 
-
+	// 玩家角色单例
 	public static Player mainPlayer;
-
-
 
 	public override void Awake(){
 

@@ -8,6 +8,7 @@ public class Provoke : StateSkillEffect {
 	{
 		self.agility = (int)((1.0f + this.scaler * skillLevel) * self.agility);
 		StateSkillEffect fury = GameManager.gameManager.GenerateStates("fury")[0];
-		target.AddState (fury,skillLevel);
+		fury.effectTarget = SkillEffectTarget.Enemy;
+		BattleAgentStatesManager.AddStateCopyToEffectTarget (self, target, fury, skillLevel);
 	}
 }

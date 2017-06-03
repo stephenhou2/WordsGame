@@ -22,7 +22,8 @@ public class Infect : StateSkillEffect {
 				StateSkillEffect debuff = debuffs [index];
 				debuff.effectDuration = 1;//传染给攻击者的debuff一共持续1轮
 				debuff.actionCount = 0;
-				self.AddState (debuff,skillLevel);
+				debuff.effectTarget = SkillEffectTarget.Enemy;
+				BattleAgentStatesManager.AddStateCopyToEffectTarget (self, target, debuff, skillLevel);
 
 			}
 		}

@@ -39,7 +39,8 @@ public class Confuse : StateSkillEffect {
 
 		} else if(isTaunt){
 			StateSkillEffect taunt = GameManager.gameManager.GenerateStates ("taunt")[0];
-			self.AddState (taunt, skillLevel);
+			taunt.effectTarget = SkillEffectTarget.Self;
+			BattleAgentStatesManager.AddStateCopyToEffectTarget (self, target, taunt, skillLevel);
 		}
 	}
 

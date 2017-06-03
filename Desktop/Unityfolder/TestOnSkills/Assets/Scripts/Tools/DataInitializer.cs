@@ -3,27 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-public class DataInitializer{
+public static class DataInitializer{
 
-	// 加载所有的技能效果
-	public static EffectData[] LoadEffectsWithPath(string filePath,string fileName){
-		
-		DataLoader dataLoader = new DataLoader ();
 
-		string jsonStr = dataLoader.LoadDataString (filePath, fileName);
+	// 数据转模型
+	public static T[] LoadDataWithPath<T>(string filePath,string fileName){
 
-		EffectData[] effectDataArray = null;
+		string jsonStr = LoadDataString (filePath, fileName);
+
+		T[] dataArray = null;
 
 		//模型转换
 		try{
-			effectDataArray = JsonHelper.FromJson<EffectData> (jsonStr);
+			dataArray = JsonHelper.FromJson<T> (jsonStr);
 		}catch(System.Exception e){
 			Debug.Log (e.Message);
 		}
-		return effectDataArray;
+		return dataArray;
 	}
 
+	// 加载指定路径的文件数据
+	public static string LoadDataString(string filePath,string fileName){
+		StreamReader sr = null;
+		//读取文件
+		try{
+			sr = File.OpenText (filePath + "/" + fileName);
+			string dataString = sr.ReadToEnd ();
+			Debug.Log(dataString);
+			return dataString;
 
+		}catch(System.Exception e){
+			Debug.Log (e.Message);
+			return null;
+		}
+	}
 
 
 }

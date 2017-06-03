@@ -5,60 +5,66 @@ using UnityEngine;
 
 public abstract class StateSkillEffect : BaseSkillEffect {
 
+	public bool hasBeenExcuted;
 
+//	// 状态管理方法，提供状态类效果的等级信息和作用的单位信息
+//	public void AddStateCopyToEffectTarget (BattleAgent self, BattleAgent enemy, int skillLevel,TriggerType triggerType,int attachedInfo)
+//	{
+//		this.skillLevel = skillLevel;//效果等级等于技能等级
+//
+//		// 根据技能指向将状态加到指定的对象身上
+//		switch (effectTarget) {
+//		case SkillEffectTarget.Self:
+//			AddStateTo (self);
+//			break;
+//		case SkillEffectTarget.Enemy:
+//			AddStateTo (enemy);
+//			break;
+//		case SkillEffectTarget.Both:
+//			AddStateTo (self);
+//			AddStateTo (enemy);
+//			break;
+//		default:
+//			break;
+//		}
+//
+//	}
 
-	// 状态管理方法，提供状态类效果的等级信息和作用的单位信息
-	public void ManageState (BattleAgent self, BattleAgent target, int skillLevel,TriggerType triggerType,int attachedInfo)
-	{
-		this.skillLevel = skillLevel;//效果等级等于技能等级
+//	public bool ManagerStateOf(BattleAgent ba){
+//		if (this.actionCount > effectDuration) {
+//			ba.RemoveState (this);
+//			Debug.Log (ba.agentName + "remove state:" + this.name);
+//			Destroy (this);
+//			return true;
+//
+//		}
+//		return false;
+//	}
 
-		// 根据技能指向将状态加到指定的对象身上
-		switch (effectTarget) {
-		case SkillEffectTarget.Self:
-			AddStateTo (self,this);
-			break;
-		case SkillEffectTarget.Enemy:
-			AddStateTo (target,this);
-			break;
-		case SkillEffectTarget.Both:
-			AddStateTo (self,this);
-			AddStateTo (target,this);
-			break;
-		default:
-			break;
-		}
-	}
+//	// 将状态添加到对象身上
+//	public virtual void AddStateTo(BattleAgent ba){
+//		
+//		StateSkillEffect sse = null;
+//
+//		for (int i = 0; i < ba.states.Count; i++) {
+//			sse = ba.states [i];
+//			if (this.id == sse.id) {
+//				sse.actionCount = 1;
+//				return;
+//			}
+//		}
+//		sse = Instantiate (this);
+//		ba.AddState (sse,skillLevel);
+//		Debug.Log (ba.agentName + " add state: " + sse.name);
+//
+//	}
 
-	//管理单位上每种状态的生命周期，添加和删除状态时会重新计算单位的各种属性
-	public virtual void AddStateTo(BattleAgent ba,StateSkillEffect sse){
-		actionCount++;
-		Debug.Log ("action count" + actionCount + this.effectName);
-
-		StateSkillEffect effect = null;
-
-		if (actionCount > effectDuration) {
-			actionCount = 0;
-			//到达持续回合数移除状态(按照技能效果名称查询)
-			ba.RemoveState (effect);
-			Debug.Log (ba.agentName + "remove" + this.name);
-			if (effect != null) {
-				Destroy (effect);
-			}
+	public void ExcuteEffect(BattleAgent self, BattleAgent enemy, int skillLevel,TriggerType triggerType,int attachedInfo){
+		if (hasBeenExcuted && !canOverlay) {
 			return;
 		}
-
-
-		//添加状态
-		if(!canOverlay && actionCount != 1) {
-			return;
-		} 
-		effect = Instantiate (sse);
-		ba.AddState (effect,effect.skillLevel);
-		Debug.Log (ba.agentName + "add" + effect.name);
-
-
-
-
+		AffectAgent(self, enemy, skillLevel,triggerType,attachedInfo);
+		hasBeenExcuted = true;
 	}
 
 }

@@ -6,18 +6,16 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
-
+	// 游戏控制器单例
 	public static GameManager gameManager;
 
 	public BattleManager battleManager;
 
 	[HideInInspector]public BattleManager m_battleManager;
 
-	public Player player;
+	[HideInInspector]public Player player;
 
 	public int gameProcess;
-
-	public Transform container;
 
 	public SkillGenerator skillGenerator;
 
@@ -39,23 +37,26 @@ public class GameManager : MonoBehaviour {
 	//初始化战斗
 	public void OnEnterBattle(){
 
-		SceneManager.LoadSceneAsync (1, LoadSceneMode.Additive);
+		SceneManager.LoadSceneAsync ("BattleTestScene", LoadSceneMode.Additive);
+
 
 
 	}
 
 	// 初始化生成技能的界面
 	public void OnGenerateSkill(){
-		if (effectsData.Length == 0) {
-			effectsData = DataInitializer.LoadEffectsWithPath (CommonData.effectsFilePath, CommonData.effectsFileName);
-		}
-		skillGenerator.SetupSkillGenerator (effectsData);
+
+		SceneManager.LoadSceneAsync ("GenerateSkillScene", LoadSceneMode.Additive);
+//		if (effectsData.Length == 0) {
+//			effectsData = DataInitializer.LoadDataWithPath<EffectData> (CommonData.effectsFilePath, CommonData.effectsFileName);
+//		}
+//		skillGenerator.SetupSkillGenerator (effectsData);
 	}
 
 	// 使用effectName生成特定效果，如果effectName==null，则生成所有状态类效果
 	public StateSkillEffect[] GenerateStates(string effectName){
 		if (effectsData.Length == 0) {
-			effectsData = DataInitializer.LoadEffectsWithPath (CommonData.effectsFilePath, CommonData.effectsFileName);
+			effectsData = DataInitializer.LoadDataWithPath <EffectData>(CommonData.effectsFilePath, CommonData.effectsFileName);
 		}
 		return skillGenerator.GenerateStateSkillEffects (effectsData,effectName);
 	}

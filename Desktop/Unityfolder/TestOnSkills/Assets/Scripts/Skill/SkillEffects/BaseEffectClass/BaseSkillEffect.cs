@@ -33,7 +33,7 @@ public abstract class BaseSkillEffect:MonoBehaviour {
 
 	public float seed = 0.01f;//计算伤害和闪避时的种子数
 
-	public int actionCount = 0;//该效果已持续的回合数
+	public int actionCount = 1;//该效果已持续的回合数
 
 	public int skillLevel;//效果等级
 
