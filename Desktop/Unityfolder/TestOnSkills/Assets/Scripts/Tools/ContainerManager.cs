@@ -11,6 +11,7 @@ public class ContainerManager:MonoBehaviour {
 
 		if (commonContainer == null) {
 			commonContainer = (new GameObject ()).transform;
+			commonContainer.name = "ContainerModel";
 		}
 
 		Transform mContainer = Instantiate (commonContainer);

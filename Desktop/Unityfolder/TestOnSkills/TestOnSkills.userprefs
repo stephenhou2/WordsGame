@@ -2,23 +2,24 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Main/BattleManager.cs">
     <Files>
-      <File FileName="Assets/Scripts/Role/BattleAgent.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Skill/Skill.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Main/GameManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/WordGenerator.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Tools/CommonData.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Tools/SkillGenerator.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Role/Player.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Main/BattleManager.cs" Line="127" Column="55" />
-      <File FileName="Assets/Scripts/Skill/SkillEffects/State/Confuse.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Role/Monster.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Role/BattleAgent.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Main/BattleManager.cs" Line="47" Column="21" />
       <File FileName="Assets/Scripts/Skill/SkillEffects/BaseEffectClass/StateSkillEffect.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/BattleAgentStatesManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Skill/SkillEffects/State/Confuse.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Skill/SkillEffects/State/Gambler.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Skill/SkillEffects/State/Infect.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Skill/SkillEffects/State/Learn.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Skill/SkillEffects/State/Provoke.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/houlianghong/Desktop/Unityfolder/TestOnSkills/Assets/Scripts/Main/BattleManager.cs" line="114" column="1" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

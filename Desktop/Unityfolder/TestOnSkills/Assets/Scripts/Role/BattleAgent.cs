@@ -79,7 +79,6 @@ public abstract class BattleAgent : MonoBehaviour {
 	public void RemoveState(StateSkillEffect sse){
 		for(int i = 0;i<states.Count;i++){
 			if (sse.effectName == states[i].effectName) {
-//				states.Remove (sse);
 				states.RemoveAt(i);
 				Destroy (sse);
 				ResetBattleAgentProperties (false);
@@ -88,18 +87,6 @@ public abstract class BattleAgent : MonoBehaviour {
 		}
 	}
 
-	//根据状态重新计算各属性值
-//	public void ReCaculateProperty(bool toOriginalState){
-//		ResetBattleAgentProperties (toOriginalState);
-//		foreach (StateSkillEffect sse in states) {
-//			if (sse.startTurn == StartTurn.Next) {
-//				sse.startTurn = StartTurn.Current;
-//				return;
-//			}
-//			sse.AffectAgent (this, this.enemy, sse.skillLevel, TriggerType.None, 0);
-//			sse.startTurn = StartTurn.Next;
-//		}
-//	}
 	// 状态效果触发执行的方法
 	public void OnTrigger(TriggerType triggerType,int arg){
 		foreach(StateSkillEffect sse in states){

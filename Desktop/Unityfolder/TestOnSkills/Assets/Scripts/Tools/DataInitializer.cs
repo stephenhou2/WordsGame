@@ -26,6 +26,8 @@ public static class DataInitializer{
 	public static string LoadDataString(string filePath,string fileName){
 		StreamReader sr = null;
 		//读取文件
+
+		#warning 后面研究一下打包和读包  （assetBundle的使用）
 		try{
 			sr = File.OpenText (filePath + "/" + fileName);
 			string dataString = sr.ReadToEnd ();

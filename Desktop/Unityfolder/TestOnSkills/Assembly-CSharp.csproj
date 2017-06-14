@@ -106,7 +106,6 @@
      <Compile Include="Assets\Scripts\Skill\SkillEffects\State\Weaken.cs" />
      <Compile Include="Assets\Scripts\Skill\SkillEffects\State\Wrestle.cs" />
      <Compile Include="Assets\Scripts\Skill\SkillEffects\State\Yield.cs" />
-     <Compile Include="Assets\Scripts\Tools\BaseUI.cs" />
      <Compile Include="Assets\Scripts\Tools\CommonData.cs" />
      <Compile Include="Assets\Scripts\Tools\ContainerManager.cs" />
      <Compile Include="Assets\Scripts\Tools\DataInitializer.cs" />
